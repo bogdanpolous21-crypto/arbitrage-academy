@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="ShopifyPRO — практическое обучение e-commerce дропшиппингу. От выбора товара до $5,000+ в месяц с живым наставником.">
+<title>ShopifyPRO — Запусти магазин и выйди на $5,000+ за 30 дней</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#08080f;--bg2:#0f0f1a;--bg3:#13131f;
+  --accent1:#7c3aed;--accent2:#06b6d4;--accent3:#a855f7;
+  --green:#10b981;--amber:#f59e0b;
+  --text:#f1f5f9;--muted:#94a3b8;--border:rgba(255,255,255,0.08);
+  --card:rgba(255,255,255,0.04);
+}
+html{scroll-behavior:smooth}
+body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.6}
+
+@keyframes float{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-30px) scale(1.05)}}
+@keyframes float2{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-20px) rotate(180deg)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:0.4}50%{opacity:0.8}}
+@keyframes glow{0%,100%{box-shadow:0 0 20px rgba(124,58,237,0.3)}50%{box-shadow:0 0 40px rgba(124,58,237,0.6)}}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between;transition:all 0.3s;border-bottom:1px solid transparent}
+.nav.scrolled{background:rgba(8,8,15,0.92);backdrop-filter:blur(20px);border-color:var(--border)}
+.nav-logo{display:flex;align-items:center;gap:8px;font-family:'Space Mono',monospace;font-weight:700;font-size:18px;letter-spacing:-0.5px;text-decoration:none;color:var(--text)}
+.nav-logo-icon{width:32px;height:32px;background:linear-gradient(135deg,var(--accent1),var(--accent2));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px}
+.nav-links{display:flex;gap:32px;list-style:none}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:14px;font-weight:500;transition:color 0.2s}
+.nav-links a:hover{color:var(--text)}
+.nav-cta{background:linear-gradient(135deg,var(--accent1),var(--accent3));border:none;color:#fff;padding:9px 22px;border-radius:8px;font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all 0.2s;text-decoration:none}
+.nav-cta:hover{transform:scale(1.05);box-shadow:0 0 20px rgba(124,58,237,0.4)}
+.burger{display:none;background:none;border:none;color:var(--text);cursor:pointer;font-size:22px;padding:4px}
+
+/* MOBILE DRAWER */
+.drawer{position:fixed;inset:0;z-index:200;display:none}
+.drawer.open{display:block}
+.drawer-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px)}
+.drawer-panel{position:absolute;top:0;right:0;bottom:0;width:280px;background:var(--bg2);border-left:1px solid var(--border);padding:24px;display:flex;flex-direction:column;gap:8px;animation:slideInRight 0.25s ease}
+@keyframes slideInRight{from{transform:translateX(100%)}to{transform:translateX(0)}}
+.drawer-close{background:none;border:1px solid var(--border);color:var(--text);width:36px;height:36px;border-radius:8px;cursor:pointer;font-size:18px;margin-bottom:16px;align-self:flex-start}
+.drawer-link{color:var(--muted);text-decoration:none;font-size:16px;font-weight:500;padding:12px 0;border-bottom:1px solid var(--border);transition:color 0.2s}
+.drawer-link:hover{color:var(--text)}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:80px 24px 40px}
+.hero-bg{position:absolute;inset:0;pointer-events:none}
+.blob{position:absolute;border-radius:50%;filter:blur(80px);animation:float 8s ease-in-out infinite}
+.blob1{width:500px;height:500px;background:radial-gradient(circle,rgba(124,58,237,0.3),transparent);top:-100px;left:-200px;animation-delay:0s}
+.blob2{width:400px;height:400px;background:radial-gradient(circle,rgba(6,182,212,0.2),transparent);bottom:-100px;right:-100px;animation-delay:3s}
+.blob3{width:300px;height:300px;background:radial-gradient(circle,rgba(168,85,247,0.2),transparent);top:50%;left:50%;animation-delay:5s}
+.grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);background-size:60px 60px}
+.hero-inner{position:relative;z-index:1;text-align:center;max-width:860px;width:100%}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(124,58,237,0.15);border:1px solid rgba(124,58,237,0.3);border-radius:100px;padding:6px 16px;font-size:13px;color:#a78bfa;margin-bottom:32px;animation:fadeUp 0.6s ease both}
+.hero-badge-dot{width:6px;height:6px;background:#7c3aed;border-radius:50%;animation:pulse 2s infinite;flex-shrink:0}
+.hero-h1{font-size:clamp(36px,6vw,80px);font-weight:700;line-height:1.05;letter-spacing:-2px;margin-bottom:24px;animation:fadeUp 0.6s 0.1s ease both}
+.hero-h1 .grad{background:linear-gradient(135deg,#a78bfa,var(--accent2),#34d399);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:clamp(15px,2vw,20px);color:var(--muted);max-width:580px;margin:0 auto 40px;line-height:1.7;animation:fadeUp 0.6s 0.2s ease both}
+.hero-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;animation:fadeUp 0.6s 0.3s ease both}
+.btn-primary{background:linear-gradient(135deg,var(--accent1),var(--accent3));border:none;color:#fff;padding:14px 32px;border-radius:10px;font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:600;cursor:pointer;transition:all 0.2s;display:inline-flex;align-items:center;gap:8px;text-decoration:none}
+.btn-primary:hover{transform:scale(1.05) translateY(-2px);box-shadow:0 8px 30px rgba(124,58,237,0.4)}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text);padding:14px 32px;border-radius:10px;font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:600;cursor:pointer;transition:all 0.2s;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-ghost:hover{border-color:rgba(255,255,255,0.3);transform:translateY(-2px)}
+.hero-stats{display:flex;gap:48px;justify-content:center;margin-top:64px;animation:fadeUp 0.6s 0.4s ease both;flex-wrap:wrap}
+.hero-stat-num{font-family:'Space Mono',monospace;font-size:28px;font-weight:700;background:linear-gradient(135deg,#fff,#94a3b8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-stat-label{font-size:12px;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;margin-top:2px}
+
+/* SECTIONS */
+.section{padding:100px 24px;max-width:1140px;margin:0 auto;opacity:0;transform:translateY(40px);transition:opacity 0.7s ease,transform 0.7s ease}
+.section.visible{opacity:1;transform:translateY(0)}
+.section-eyebrow{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent2);margin-bottom:12px}
+.section-h2{font-size:clamp(28px,4vw,48px);font-weight:700;letter-spacing:-1px;margin-bottom:16px;line-height:1.1}
+.section-h2 .grad{background:linear-gradient(135deg,var(--accent1),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.section-sub{font-size:17px;color:var(--muted);max-width:520px}
+
+/* FEATURES */
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;margin-top:56px}
+.feat-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:32px;transition:all 0.3s;position:relative;overflow:hidden}
+.feat-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(124,58,237,0.05),transparent);opacity:0;transition:opacity 0.3s}
+.feat-card:hover{transform:scale(1.03) translateY(-4px);border-color:rgba(124,58,237,0.4);box-shadow:0 0 30px rgba(124,58,237,0.15)}
+.feat-card:hover::before{opacity:1}
+.feat-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;font-size:22px}
+.i1{background:rgba(124,58,237,0.15)}
+.i2{background:rgba(6,182,212,0.15)}
+.i3{background:rgba(16,185,129,0.15)}
+.i4{background:rgba(245,158,11,0.15)}
+.i5{background:rgba(239,68,68,0.15)}
+.i6{background:rgba(168,85,247,0.15)}
+.feat-title{font-size:18px;font-weight:600;margin-bottom:10px}
+.feat-desc{font-size:14px;color:var(--muted);line-height:1.7}
+
+/* STATS */
+.stats-wrap{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:80px 24px}
+.stats-inner{max-width:1140px;margin:0 auto;display:grid;grid-template-columns:1fr auto 1fr auto 1fr auto 1fr;gap:0;align-items:center;text-align:center;opacity:0;transform:translateY(30px);transition:opacity 0.7s ease,transform 0.7s ease}
+.stats-inner.visible{opacity:1;transform:translateY(0)}
+.stat-num{font-family:'Space Mono',monospace;font-size:clamp(36px,5vw,60px);font-weight:700;background:linear-gradient(135deg,#a78bfa,var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1}
+.stat-label{font-size:14px;color:var(--muted);margin-top:8px}
+.stat-divider{width:1px;height:80px;background:var(--border)}
+
+/* HOW IT WORKS */
+.steps{display:grid;grid-template-columns:1fr 60px 1fr 60px 1fr;align-items:start;margin-top:56px}
+.step{text-align:center;padding:0 16px}
+.step-badge{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--accent1),var(--accent3));display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-weight:700;font-size:20px;margin:0 auto 20px;box-shadow:0 0 20px rgba(124,58,237,0.3)}
+.step-connector{display:flex;align-items:flex-start;justify-content:center;padding-top:28px;font-size:28px;color:rgba(124,58,237,0.4)}
+.step-title{font-size:18px;font-weight:600;margin-bottom:10px}
+.step-desc{font-size:14px;color:var(--muted);line-height:1.7}
+
+/* TESTIMONIALS */
+.testi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;margin-top:56px}
+.testi-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;transition:all 0.3s}
+.testi-card:hover{transform:translateY(-4px);border-color:rgba(124,58,237,0.3)}
+.testi-stars{color:var(--amber);margin-bottom:16px;font-size:16px;letter-spacing:2px}
+.testi-quote{font-size:15px;color:var(--muted);line-height:1.7;margin-bottom:20px;font-style:italic}
+.testi-author{display:flex;align-items:center;gap:12px}
+.testi-avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex-shrink:0;color:#fff}
+.av1{background:linear-gradient(135deg,#7c3aed,#a855f7)}
+.av2{background:linear-gradient(135deg,#0891b2,#06b6d4)}
+.av3{background:linear-gradient(135deg,#059669,#10b981)}
+.testi-name{font-weight:600;font-size:14px}
+.testi-role{font-size:12px;color:var(--muted)}
+
+/* PRICING */
+.price-toggle{display:flex;align-items:center;gap:12px;margin-bottom:48px;justify-content:center}
+.toggle-wrap{background:var(--card);border:1px solid var(--border);border-radius:100px;padding:4px;display:flex}
+.tog{padding:6px 20px;border-radius:100px;font-size:13px;font-weight:500;transition:all 0.2s;color:var(--muted);background:none;border:none;font-family:'Space Grotesk',sans-serif;cursor:pointer}
+.tog.active{background:linear-gradient(135deg,var(--accent1),var(--accent3));color:#fff}
+.badge-save{background:rgba(16,185,129,0.15);color:#6ee7b7;border:1px solid rgba(16,185,129,0.2);border-radius:100px;padding:3px 12px;font-size:11px;font-weight:600}
+.price-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+.price-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:36px;position:relative;transition:all 0.3s}
+.price-card:hover{transform:translateY(-4px)}
+.price-card.featured{border-color:rgba(124,58,237,0.5);background:rgba(124,58,237,0.08);transform:scale(1.03)}
+.price-card.featured:hover{transform:scale(1.03) translateY(-4px);box-shadow:0 0 40px rgba(124,58,237,0.2)}
+.price-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--accent1),var(--accent3));color:#fff;font-size:11px;font-weight:700;padding:4px 16px;border-radius:100px;letter-spacing:0.06em;white-space:nowrap}
+.price-name{font-size:13px;color:var(--muted);font-weight:500;margin-bottom:8px;letter-spacing:0.06em;text-transform:uppercase;font-family:'Space Mono',monospace}
+.price-amount{font-family:'Space Mono',monospace;font-size:48px;font-weight:700;line-height:1;margin-bottom:4px;display:flex;align-items:flex-start;gap:4px}
+.price-amount sup{font-size:20px;margin-top:10px}
+.price-period{font-size:13px;color:var(--muted);margin-bottom:28px}
+.price-divider{height:1px;background:var(--border);margin-bottom:24px}
+.price-features{list-style:none;display:flex;flex-direction:column;gap:12px;margin-bottom:32px}
+.price-features li{display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--muted);line-height:1.5}
+.check{color:var(--green);flex-shrink:0;font-size:14px;margin-top:1px}
+.price-btn{width:100%;border:none;padding:14px;border-radius:10px;font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:all 0.2s;text-decoration:none;display:block;text-align:center}
+.price-btn-main{background:linear-gradient(135deg,var(--accent1),var(--accent3));color:#fff}
+.price-btn-main:hover{box-shadow:0 8px 20px rgba(124,58,237,0.3);transform:translateY(-2px)}
+.price-btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text)}
+.price-btn-ghost:hover{border-color:rgba(255,255,255,0.3);transform:translateY(-2px)}
+
+/* FAQ */
+.faq-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:56px}
+.faq-item{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:border-color 0.2s;cursor:pointer}
+.faq-item.open{border-color:rgba(124,58,237,0.3)}
+.faq-q{padding:20px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;font-weight:500;font-size:15px}
+.faq-chevron{font-size:18px;color:var(--muted);transition:transform 0.3s;flex-shrink:0}
+.faq-item.open .faq-chevron{transform:rotate(180deg);color:var(--accent1)}
+.faq-a{padding:0 24px;max-height:0;overflow:hidden;transition:max-height 0.35s ease,padding 0.35s ease;font-size:14px;color:var(--muted);line-height:1.7}
+.faq-a.open{max-height:300px;padding:0 24px 20px}
+
+/* CTA BANNER */
+.cta-section{padding:0 24px 100px;max-width:1140px;margin:0 auto;opacity:0;transform:translateY(40px);transition:opacity 0.7s ease,transform 0.7s ease}
+.cta-section.visible{opacity:1;transform:translateY(0)}
+.cta-inner{background:linear-gradient(135deg,rgba(124,58,237,0.2),rgba(6,182,212,0.1));border:1px solid rgba(124,58,237,0.2);border-radius:24px;padding:80px 48px;text-align:center;position:relative;overflow:hidden}
+.cta-deco{position:absolute;font-size:200px;opacity:0.03;pointer-events:none;top:-20px;right:-20px;animation:float2 10s infinite ease-in-out;line-height:1}
+.cta-h2{font-size:clamp(28px,4vw,48px);font-weight:700;letter-spacing:-1px;margin-bottom:16px;line-height:1.15}
+.cta-h2 .grad{background:linear-gradient(135deg,#a78bfa,#67e8f9);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.cta-sub{font-size:17px;color:var(--muted);margin-bottom:40px;max-width:500px;margin-left:auto;margin-right:auto}
+.email-row{display:flex;gap:12px;max-width:480px;margin:0 auto 16px;flex-wrap:wrap;justify-content:center}
+.email-input{flex:1;min-width:220px;background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:10px;padding:14px 18px;font-family:'Space Grotesk',sans-serif;font-size:15px;color:var(--text);outline:none;transition:border-color 0.2s}
+.email-input:focus{border-color:rgba(124,58,237,0.5)}
+.email-input::placeholder{color:var(--muted)}
+.cta-note{font-size:13px;color:var(--muted)}
+.cta-note a{color:#a78bfa;text-decoration:none}
+.cta-note a:hover{text-decoration:underline}
+
+/* FOOTER */
+.footer{border-top:1px solid var(--border);padding:64px 24px 32px}
+.footer-top{max-width:1140px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px}
+.footer-logo{display:flex;align-items:center;gap:8px;font-family:'Space Mono',monospace;font-weight:700;font-size:18px;margin-bottom:12px;color:var(--text);text-decoration:none}
+.footer-desc{font-size:14px;color:var(--muted);line-height:1.7;max-width:260px}
+.footer-socials{display:flex;gap:10px;margin-top:20px}
+.social-btn{width:36px;height:36px;border-radius:8px;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:15px;color:var(--muted);cursor:pointer;transition:all 0.2s;text-decoration:none}
+.social-btn:hover{border-color:rgba(124,58,237,0.4);color:var(--accent1);transform:translateY(-2px)}
+.footer-col-title{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--text);margin-bottom:20px;font-weight:700}
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:10px}
+.footer-links a{font-size:14px;color:var(--muted);text-decoration:none;transition:color 0.2s}
+.footer-links a:hover{color:var(--text)}
+.footer-bottom{max-width:1140px;margin:0 auto;border-top:1px solid var(--border);padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.footer-copy{font-size:13px;color:var(--muted)}
+.footer-legal{display:flex;gap:24px}
+.footer-legal a{font-size:13px;color:var(--muted);text-decoration:none;transition:color 0.2s}
+.footer-legal a:hover{color:var(--text)}
+
+/* RESPONSIVE */
+@media(max-width:1024px){
+  .steps{grid-template-columns:1fr 40px 1fr 40px 1fr}
+}
+@media(max-width:768px){
+  .nav-links,.nav-cta{display:none}
+  .burger{display:block}
+  .steps{grid-template-columns:1fr;gap:32px}
+  .step-connector{display:none}
+  .faq-grid{grid-template-columns:1fr}
+  .footer-top{grid-template-columns:1fr 1fr}
+  .cta-inner{padding:48px 24px}
+  .stats-inner{grid-template-columns:1fr 1fr;gap:32px}
+  .stat-divider{display:none}
+  .hero-stats{gap:28px}
+  .price-card.featured{transform:none}
+}
+@media(max-width:480px){
+  .footer-top{grid-template-columns:1fr}
+  .hero-stats{gap:20px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="mainNav">
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-icon">🛍️</div>
+    ShopifyPRO
+  </a>
+  <ul class="nav-links">
+    <li><a href="#features">Программа</a></li>
+    <li><a href="#howto">Как работает</a></li>
+    <li><a href="#reviews">Отзывы</a></li>
+    <li><a href="#pricing">Цены</a></li>
+    <li><a href="#faq">FAQ</a></li>
+  </ul>
+  <a href="https://t.me/POLOUS_ARBITRAGE_ACADEMY" target="_blank" class="nav-cta">Записаться →</a>
+  <button class="burger" id="burger" aria-label="Меню">☰</button>
+</nav>
+
+<!-- MOBILE DRAWER -->
+<div class="drawer" id="drawer">
+  <div class="drawer-overlay" onclick="closeDrawer()"></div>
+  <div class="drawer-panel">
+    <button class="drawer-close" onclick="closeDrawer()">✕</button>
+    <a class="drawer-link" href="#features" onclick="closeDrawer()">Программа</a>
+    <a class="drawer-link" href="#howto" onclick="closeDrawer()">Как работает</a>
+    <a class="drawer-link" href="#reviews" onclick="closeDrawer()">Отзывы</a>
+    <a class="drawer-link" href="#pricing" onclick="closeDrawer()">Цены</a>
+    <a class="drawer-link" href="#faq" onclick="closeDrawer()">FAQ</a>
+    <br>
+    <a href="https://t.me/POLOUS_ARBITRAGE_ACADEMY" target="_blank" class="btn-primary" style="margin-top:8px;justify-content:center">Записаться →</a>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg">
+    <div class="grid-bg"></div>
+    <div class="blob blob1"></div>
+    <div class="blob blob2"></div>
+    <div class="blob blob3"></div>
+  </div>
+  <div class="hero-inner">
+    <div class="hero-badge"><span class="hero-badge-dot"></span> Shopify + Facebook Ads · 2026</div>
+    <h1 class="hero-h1">Запусти магазин и<br><span class="grad">выйди на $5,000+</span><br>за 30 дней</h1>
+    <p class="hero-sub">Пошаговая система: выбор товара, создание Shopify магазина, настройка Facebook рекламы. От нуля до первых продаж — с живым наставником.</p>
+    <div class="hero-btns">
+      <a href="https://t.me/POLOUS_ARBITRAGE_ACADEMY" target="_blank" class="btn-primary">Начать обучение →</a>
+      <a href="#howto" class="btn-ghost">Как это работает</a>
+    </div>
+    <div class="hero-stats">
+      <div><div class="hero-stat-num" data-count="237">0</div><div class="hero-stat-label">Выпускников</div></div>
+      <div><div class="hero-stat-num" data-count="4.78" data-decimal="true">0</div><div class="hero-stat-label">Средний ROAS</div></div>
+      <div><div class="hero-stat-num" data-count="1" data-suffix="M+">0</div><div class="hero-stat-label">$ открутили студенты</div></div>
+      <div><div class="hero-stat-num" data-count="30">0</div><div class="hero-stat-label">Дней до результата</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<div id="features" class="section">
+  <div class="section-eyebrow">Программа курса</div>
+  <h2 class="section-h2">Всё что нужно для <span class="grad">запуска</span></h2>
+  <p class="section-sub">Полная система от выбора товара до масштабирования рекламы — без воды и теории ради теории.</p>
+  <div class="features-grid">
+    <div class="feat-card"><div class="feat-icon i1">🛍️</div><div class="feat-title">Shopify магазин с нуля</div><div class="feat-desc">Создание, оформление, настройка платёжек Stripe и PayPal. Клонирование успешных магазинов через Winner Hunter и AI.</div></div>
+    <div class="feat-card"><div class="feat-icon i2">🎯</div><div class="feat-title">Facebook Ads система</div><div class="feat-desc">Структура кабинета, аудитории, тестирование креативов. Как выйти на ROAS 4+ с первых недель запуска.</div></div>
+    <div class="feat-card"><div class="feat-icon i3">🔍</div><div class="feat-title">Поиск winner товара</div><div class="feat-desc">Критерии выбора: маржа, спрос, конкуренция. AliExpress фильтры, FB Library, SPY-сервисы — полный разбор.</div></div>
+    <div class="feat-card"><div class="feat-icon i4">🎨</div><div class="feat-title">Видео-креативы</div><div class="feat-desc">Структура продающего крео: хук, демонстрация, призыв. Как делать через CapCut без съёмки и дизайнера.</div></div>
+    <div class="feat-card"><div class="feat-icon i5">📊</div><div class="feat-title">Аналитика и масштаб</div><div class="feat-desc">Чтение метрик, отключение слабых адсетов, масштабирование победителей. Путь от $50/день до $500/день.</div></div>
+    <div class="feat-card"><div class="feat-icon i6">💳</div><div class="feat-title">Платёжки и вывод денег</div><div class="feat-desc">Stripe, PayPal, Wise — как принимать оплату и выводить деньги из любой страны без отказов.</div></div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-wrap">
+  <div class="stats-inner" id="statsInner">
+    <div><div class="stat-num" data-count="500" data-suffix="+">0</div><div class="stat-label">Верифицированных отзывов</div></div>
+    <div class="stat-divider"></div>
+    <div><div class="stat-num" data-count="200" data-suffix="K+">0</div><div class="stat-label">$ чистой прибыли у учеников</div></div>
+    <div class="stat-divider"></div>
+    <div><div class="stat-num" data-count="93" data-suffix="%">0</div><div class="stat-label">Студентов получили первые продажи</div></div>
+    <div class="stat-divider"></div>
+    <div><div class="stat-num" data-count="30" data-suffix=" дней">0</div><div class="stat-label">Средний срок до результата</div></div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div id="howto" class="section">
+  <div style="text-align:center">
+    <div class="section-eyebrow">Процесс</div>
+    <h2 class="section-h2">Три шага до <span class="grad">первых продаж</span></h2>
+    <p class="section-sub" style="margin:0 auto">Чёткая последовательность без лишних шагов — от регистрации до первого заказа.</p>
+  </div>
+  <div class="steps">
+    <div class="step">
+      <div class="step-badge">01</div>
+      <div class="feat-icon i1" style="margin:0 auto 16px">🔍</div>
+      <div class="step-title">Находишь товар</div>
+      <div class="step-desc">Выбираешь winner-продукт по нашей системе. Проверяешь маржу, спрос и конкуренцию. Находишь поставщика на AliExpress или CJ Dropshipping.</div>
+    </div>
+    <div class="step-connector">→</div>
+    <div class="step">
+      <div class="step-badge">02</div>
+      <div class="feat-icon i2" style="margin:0 auto 16px">🛍️</div>
+      <div class="step-title">Создаёшь магазин</div>
+      <div class="step-desc">Запускаешь Shopify за 1 день. Настраиваешь тему, платёжки, подключаешь пиксель. Готовишь 3–5 видео-креативов через CapCut.</div>
+    </div>
+    <div class="step-connector">→</div>
+    <div class="step">
+      <div class="step-badge">03</div>
+      <div class="feat-icon i3" style="margin:0 auto 16px">🎯</div>
+      <div class="step-title">Запускаешь рекламу</div>
+      <div class="step-desc">Тестируешь аудитории по нашей структуре. Анализируешь метрики. Масштабируешь то что работает — и получаешь продажи каждый день.</div>
+    </div>
+  </div>
+</div>
+
+<!-- TESTIMONIALS -->
+<div id="reviews" class="section">
+  <div class="section-eyebrow">Отзывы</div>
+  <h2 class="section-h2">Что говорят <span class="grad">студенты</span></h2>
+  <div class="testi-grid">
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-quote">"Работаю на ремонтах в Днепре и параллельно делаю Shopify. Первые ревенью $2,000 получил через 6 недель после старта. Куратор всегда на связи, разобрал мой кабинет лично."</p>
+      <div class="testi-author"><div class="testi-avatar av1">АС</div><div><div class="testi-name">Андрей С.</div><div class="testi-role">Студент из Днепра</div></div></div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-quote">"Я действующий военный, совмещаю со службой и помогает иногда моя девушка. Богдан адекватно общался и помогал пока я не вышел на уровень. Смело рекомендую — система реально работает."</p>
+      <div class="testi-author"><div class="testi-avatar av2">НП</div><div><div class="testi-name">Николай П.</div><div class="testi-role">Студент из Кривого Рога</div></div></div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-quote">"Пробовал раньше сам — ничего не вышло. Здесь всё чётко: что делать, в каком порядке, почему. За 30 дней вышел на первые 5 продаж. Продолжаю расти."</p>
+      <div class="testi-author"><div class="testi-avatar av3">НВ</div><div><div class="testi-name">Никита В.</div><div class="testi-role">Студент из Варшавы</div></div></div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-quote">"Зашёл с $650 — честно думал что этого не хватит. Первый месяц был тяжёлый, почти без продаж. Но продолжал, тестировал товары, менял креативы. К третьему месяцу вышел на $1,500 чистыми. Это упорный труд, но система работает."</p>
+      <div class="testi-author"><div class="testi-avatar av1">ДК</div><div><div class="testi-name">Дмитрий К.</div><div class="testi-role">Студент из Харькова</div></div></div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-quote">"Начинал с $650, работал параллельно на заводе. Первые две недели — ноль. Потом нашёл рабочий товар, пошли первые заказы. Через 3 месяца упорной работы вышел на $1,500 в месяц. Теперь планирую уходить с завода."</p>
+      <div class="testi-author"><div class="testi-avatar av2">МЛ</div><div><div class="testi-name">Максим Л.</div><div class="testi-role">Студент из Запорожья</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- PRICING -->
+<div id="pricing" class="section">
+  <div style="text-align:center">
+    <div class="section-eyebrow">Тарифы</div>
+    <h2 class="section-h2">Выбери <span class="grad">формат</span></h2>
+    <p class="section-sub" style="margin:0 auto 32px">Рассрочка до 12 платежей. Оплата: Монобанк, PayPal, USDT TRC20, ПриватБанк.</p>
+  </div>
+  <div class="price-toggle">
+    <div class="toggle-wrap">
+      <button class="tog active" id="tog-month" onclick="setPricing('month')">Стандарт</button>
+      <button class="tog" id="tog-year" onclick="setPricing('year')">Со скидкой −20%</button>
+    </div>
+    <span class="badge-save">Экономия до €318</span>
+  </div>
+  <div class="price-grid">
+    <div class="price-card">
+      <div class="price-name">Группа</div>
+      <div class="price-amount"><sup>€</sup><span id="p1">690</span></div>
+      <div class="price-period">единоразово · доступ навсегда</div>
+      <div class="price-divider"></div>
+      <ul class="price-features">
+        <li><span class="check">✓</span> Полный курс — все модули</li>
+        <li><span class="check">✓</span> Групповые созвоны раз в неделю</li>
+        <li><span class="check">✓</span> Чат поддержки 60 дней</li>
+        <li><span class="check">✓</span> Разборы в группе</li>
+        <li><span class="check">✓</span> Гарантия до 5 первых продаж</li>
+      </ul>
+      <a href="https://t.me/POLOUS_ARBITRAGE_ACADEMY" target="_blank" class="price-btn price-btn-ghost">Записаться</a>
+    </div>
+    <div class="price-card featured">
+      <div class="price-badge">★ ПОПУЛЯРНЫЙ</div>
+      <div class="price-name">Личная работа</div>
+      <div class="price-amount"><sup>€</sup><span id="p2">1590</span></div>
+      <div class="price-period">единоразово · наставник до результата</div>
+      <div class="price-divider"></div>
+      <ul class="price-features">
+        <li><span class="check">✓</span> Всё из тарифа Группа</li>
+        <li><span class="check">✓</span> Личные созвоны с куратором</li>
+        <li><span class="check">✓</span> Разбор твоего магазина лично</li>
+        <li><span class="check">✓</span> Помощь с запуском рекламы</li>
+        <li><span class="check">✓</span> Гарантия до 20 первых продаж</li>
+        <li><span class="check">✓</span> RevShare кейс до $140K</li>
+      </ul>
+      <a href="https://t.me/POLOUS_ARBITRAGE_ACADEMY" target="_blank" class="price-btn price-btn-main">Записаться на личную →</a>
+    </div>
+    <div class="price-card">
+      <div class="price-name">VIP / RevShare</div>
+      <div class="price-amount" style="font-size:28px;align-items:center;margin-top:12px">По запросу</div>
+      <div class="price-period">индивидуально · работа на результат</div>
+      <div class="price-divider"></div>
+      <ul class="price-features">
+        <li><span class="check">✓</span> Всё из Личной работы</li>
+        <li><span class="check">✓</span> Доля с твоих продаж вместо оплаты</li>
+        <li><span class="check">✓</span> Кейс $140K — ты следующий</li>
+        <li><span class="check">✓</span> Прямой доступ к ментору 24/7</li>
+        <li><span class="check">✓</span> Масштабирование до $10K/мес</li>
+      </ul>
+      <a href="https://t.me/POLOUS_ARBITRAGE_ACADEMY" target="_blank" class="price-btn price-btn-ghost">Обсудить условия</a>
+    </div>
+  </div>
+</div>
+
+<!-- FAQ -->
+<div id="faq" class="section">
+  <div class="section-eyebrow">Вопросы</div>
+  <h2 class="section-h2">Часто <span class="grad">спрашивают</span></h2>
+  <div class="faq-grid">
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Нужен ли опыт в e-commerce? <span class="faq-chevron">▾</span></div>
+      <div class="faq-a">Нет, курс построен с нуля. Мы разбираем каждый шаг от регистрации Shopify до первых продаж. Студенты из разных сфер — ремонтники, военные, медики — успешно проходят обучение.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Какой начальный бюджет нужен? <span class="faq-chevron">▾</span></div>
+      <div class="faq-a">Минимальный старт — от $300–500 на тестирование рекламы. Shopify стоит $1/месяц первые 3 месяца. Большинство студентов начинают с $500 и окупают в первый месяц.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">На какие страны можно продавать? <span class="faq-chevron">▾</span></div>
+      <div class="faq-a">Основные рынки — UK, Канада, Австралия, США. Это Tier-1 страны с высокой покупательской способностью. Мы разбираем лучшие гео под каждую нишу на живых созвонах.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Есть ли гарантия результата? <span class="faq-chevron">▾</span></div>
+      <div class="faq-a">В тарифе Группа — гарантия до 5 первых продаж. В Личной работе — до 20 продаж с нашей помощью. Если не получится выполняя задания — разбираем магазин лично до результата.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Сколько времени нужно в день? <span class="faq-chevron">▾</span></div>
+      <div class="faq-a">Минимум 1–2 часа в день. Студенты совмещают с основной работой. Главное — стабильность: лучше 1 час каждый день, чем 8 часов раз в неделю.</div>
+    </div>
+    <div class="faq-item" onclick="toggleFaq(this)">
+      <div class="faq-q">Как проходит обучение? <span class="faq-chevron">▾</span></div>
+      <div class="faq-a">Видеоуроки + живые эфиры + чат поддержки. Разбор твоего рекламного кабинета вживую. Записи остаются навсегда. Доступ открывается сразу после оплаты.</div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA BANNER -->
+<div class="cta-section" id="ctaSection">
+  <div class="cta-inner">
+    <div class="cta-deco">🛍️</div>
+    <h2 class="cta-h2">Готов начать путь к <span class="grad">финансовой свободе?</span></h2>
+    <p class="cta-sub">Запишись сейчас — следующий поток стартует скоро. Бесплатная консультация 30 минут.</p>
+    <div class="email-row">
+      <input class="email-input" type="email" placeholder="Твой email или Telegram @username">
+      <a href="https://t.me/POLOUS_ARBITRAGE_ACADEMY" target="_blank" class="btn-primary">Получить доступ →</a>
+    </div>
+    <p class="cta-note">Или пиши напрямую: <a href="https://t.me/POLOUS_ARBITRAGE_ACADEMY" target="_blank">@POLOUS_ARBITRAGE_ACADEMY</a></p>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-top">
+    <div>
+      <a href="#" class="footer-logo">
+        <div class="nav-logo-icon">🛍️</div> ShopifyPRO
+      </a>
+      <p class="footer-desc">Практическое обучение e-commerce дропшиппингу. От выбора товара до $5,000+ в месяц — с живым наставником.</p>
+      <div class="footer-socials">
+        <a class="social-btn" href="https://t.me/POLOUS_ARBITRAGE_ACADEMY" target="_blank" title="Telegram">✈️</a>
+        <a class="social-btn" href="#" title="Facebook">📘</a>
+        <a class="social-btn" href="#" title="Instagram">📸</a>
+        <a class="social-btn" href="#" title="YouTube">▶️</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Курс</div>
+      <ul class="footer-links">
+        <li><a href="#features">Программа</a></li>
+        <li><a href="#howto">Как работает</a></li>
+        <li><a href="#pricing">Тарифы</a></li>
+        <li><a href="#reviews">Отзывы</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Поддержка</div>
+      <ul class="footer-links">
+        <li><a href="https://t.me/POLOUS_ARBITRAGE_ACADEMY" target="_blank">Telegram</a></li>
+        <li><a href="https://t.me/+N1AbXzWAjJ8wYWNi" target="_blank">Экспертный канал</a></li>
+        <li><a href="#">Политика возврата</a></li>
+        <li><a href="#">Политика конфиденциальности</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Оплата</div>
+      <ul class="footer-links">
+        <li><a href="#">Монобанк</a></li>
+        <li><a href="#">PayPal</a></li>
+        <li><a href="#">USDT TRC20</a></li>
+        <li><a href="#">ПриватБанк</a></li>
+        <li><a href="#">Bank Invoice</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2026 ShopifyPRO · Все права защищены</div>
+    <div class="footer-legal">
+      <a href="#">Политика конфиденциальности</a>
+      <a href="#">Условия использования</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Navbar scroll
+window.addEventListener('scroll',function(){
+  document.getElementById('mainNav').classList.toggle('scrolled',window.scrollY>50);
+});
+
+// Mobile drawer
+document.getElementById('burger').addEventListener('click',function(){
+  document.getElementById('drawer').classList.add('open');
+  document.body.style.overflow='hidden';
+});
+function closeDrawer(){
+  document.getElementById('drawer').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+// Smooth scroll for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(function(a){
+  a.addEventListener('click',function(e){
+    var target=document.querySelector(this.getAttribute('href'));
+    if(target){e.preventDefault();target.scrollIntoView({behavior:'smooth'});}
+  });
+});
+
+// Counter animation
+function animateCounter(el){
+  if(el.dataset.animated) return;
+  el.dataset.animated='1';
+  var target=parseFloat(el.dataset.count);
+  var suffix=el.dataset.suffix||'';
+  var isDecimal=el.dataset.decimal;
+  var dur=2000;
+  var start=performance.now();
+  function step(now){
+    var p=Math.min((now-start)/dur,1);
+    var ease=1-Math.pow(1-p,3);
+    var val=target*ease;
+    el.textContent=(isDecimal?val.toFixed(2):Math.floor(val))+suffix;
+    if(p<1) requestAnimationFrame(step);
+    else el.textContent=(isDecimal?target.toFixed(2):target)+suffix;
+  }
+  requestAnimationFrame(step);
+}
+
+// IntersectionObserver
+var io=new IntersectionObserver(function(entries){
+  entries.forEach(function(e){
+    if(e.isIntersecting){
+      e.target.classList.add('visible');
+      e.target.querySelectorAll('[data-count]').forEach(animateCounter);
+      io.unobserve(e.target);
+    }
+  });
+},{threshold:0.12});
+
+document.querySelectorAll('.section,.stats-inner,.cta-section').forEach(function(el){
+  io.observe(el);
+});
+
+// Hero counters after load
+window.addEventListener('load',function(){
+  setTimeout(function(){
+    document.querySelectorAll('.hero-stat-num[data-count]').forEach(animateCounter);
+  },700);
+});
+
+// FAQ accordion
+function toggleFaq(item){
+  var a=item.querySelector('.faq-a');
+  var isOpen=item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(function(i){
+    i.classList.remove('open');
+    i.querySelector('.faq-a').classList.remove('open');
+  });
+  if(!isOpen){item.classList.add('open');a.classList.add('open');}
+}
+
+// Pricing toggle
+function setPricing(mode){
+  document.getElementById('tog-month').className='tog'+(mode==='month'?' active':'');
+  document.getElementById('tog-year').className='tog'+(mode==='year'?' active':'');
+  if(mode==='year'){
+    document.getElementById('p1').textContent='552';
+    document.getElementById('p2').textContent='1272';
+  } else {
+    document.getElementById('p1').textContent='690';
+    document.getElementById('p2').textContent='1590';
+  }
+}
+</script>
+</body>
+</html>
